@@ -82,13 +82,20 @@
             }
         });
 
-        function addPerson(name = document.getElementById('name').value, rank = document.getElementById('rank').value, role = document.getElementById('role').value, squad = document.getElementById('squad').value) {
-            let squadTable = document.getElementById(squad.toLowerCase().replace(" ", "") + "Squad");
-            let row = squadTable.insertRow();
-            row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="this.parentElement.parentElement.remove()">Remove</button></td>`;
+        function addPerson(name, rank, role, squad) {
+            if (!name) name = document.getElementById('name').value;
+            if (!rank) rank = document.getElementById('rank').value;
+            if (!role) role = document.getElementById('role').value;
+            if (!squad) squad = document.getElementById('squad').value;
+
+            let squadTableId = squad.replace(/\s+/g, '').toLowerCase() + "Squad";
+            let squadTable = document.getElementById(squadTableId);
+            if (squadTable) {
+                let row = squadTable.insertRow();
+                row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="this.parentElement.parentElement.remove()">Remove</button></td>`;
+            }
             document.getElementById('rosterForm').reset();
         }
     </script>
 </body>
 </html>
-
