@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roster</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        table { width: 50%; margin: 20px auto; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 8px; }
-        th { background-color: #f4f4f4; }
-        input, button, select { margin: 5px; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #1e1e2e; color: white; }
+        table { width: 60%; margin: 20px auto; border-collapse: collapse; background: #2e2e3e; color: white; }
+        th, td { border: 1px solid white; padding: 10px; }
+        th { background-color: #44475a; }
+        input, button, select { margin: 5px; padding: 8px; border-radius: 5px; }
+        button { background-color: #6272a4; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #50fa7b; }
+        .squad-section { margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -37,21 +40,35 @@
             <option value="Rifleman">Rifleman</option>
             <option value="Automatic Rifleman">Automatic Rifleman</option>
         </select>
+        <select id="squad">
+            <option value="Shadow Squad">Shadow Squad</option>
+            <option value="Overwatch Squad">Overwatch Squad</option>
+            <option value="Phantom Squad">Phantom Squad</option>
+            <option value="Nomad Squad">Nomad Squad</option>
+        </select>
         <button type="submit">Add</button>
         <button type="button" id="quickAdd">Quick Add (Name Only)</button>
     </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Rank</th>
-                <th>Role</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="rosterBody">
-        </tbody>
-    </table>
+    
+    <div id="rosterContainer">
+        <div class="squad-section">
+            <h2>Shadow Squad</h2>
+            <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="shadowSquad"></tbody></table>
+        </div>
+        <div class="squad-section">
+            <h2>Overwatch Squad</h2>
+            <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="overwatchSquad"></tbody></table>
+        </div>
+        <div class="squad-section">
+            <h2>Phantom Squad</h2>
+            <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="phantomSquad"></tbody></table>
+        </div>
+        <div class="squad-section">
+            <h2>Nomad Squad</h2>
+            <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="nomadSquad"></tbody></table>
+        </div>
+    </div>
+    
     <script>
         document.getElementById('rosterForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -61,16 +78,17 @@
         document.getElementById('quickAdd').addEventListener('click', function() {
             let name = prompt("Enter name:");
             if (name) {
-                addPerson(name, "E1 Private", "Rifleman");
+                addPerson(name, "E1 Private", "Rifleman", "Nomad Squad");
             }
         });
 
-        function addPerson(name = document.getElementById('name').value, rank = document.getElementById('rank').value, role = document.getElementById('role').value) {
-            let table = document.getElementById('rosterBody');
-            let row = table.insertRow();
+        function addPerson(name = document.getElementById('name').value, rank = document.getElementById('rank').value, role = document.getElementById('role').value, squad = document.getElementById('squad').value) {
+            let squadTable = document.getElementById(squad.toLowerCase().replace(" ", "") + "Squad");
+            let row = squadTable.insertRow();
             row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="this.parentElement.parentElement.remove()">Remove</button></td>`;
             document.getElementById('rosterForm').reset();
         }
     </script>
 </body>
 </html>
+
