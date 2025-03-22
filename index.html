@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roster</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 50%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        input, button { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Team Roster</h1>
+    <form id="rosterForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="rank" placeholder="Rank" required>
+        <input type="text" id="role" placeholder="Role" required>
+        <button type="submit">Add</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Rank</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="rosterBody">
+        </tbody>
+    </table>
+    <script>
+        document.getElementById('rosterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let name = document.getElementById('name').value;
+            let rank = document.getElementById('rank').value;
+            let role = document.getElementById('role').value;
+            let table = document.getElementById('rosterBody');
+            
+            let row = table.insertRow();
+            row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="this.parentElement.parentElement.remove()">Remove</button></td>`;
+            
+            document.getElementById('rosterForm').reset();
+        });
+    </script>
+</body>
+</html>
