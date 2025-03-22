@@ -88,7 +88,8 @@
             if (!role) role = document.getElementById('role').value;
             if (!squad) squad = document.getElementById('squad').value;
 
-            let squadTableId = squad.replace(/\s+/g, '').toLowerCase() + "Squad";
+           let squadTableId = squad.split(" ")[0].toLowerCase() + "Squad";
+
             let squadTable = document.getElementById(squadTableId);
             if (squadTable) {
                 let row = squadTable.insertRow();
