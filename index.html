@@ -12,7 +12,7 @@
         input, button, select { margin: 5px; padding: 8px; border-radius: 5px; }
         button { background-color: #6272a4; color: white; border: none; cursor: pointer; }
         button:hover { background-color: #50fa7b; }
-        .squad-section { margin-top: 30px; }
+        .squad-section, .leadership-section { margin-top: 30px; }
         #rosterForm { display: none; }
     </style>
 </head>
@@ -45,6 +45,7 @@
             <option value="Automatic Rifleman">Automatic Rifleman</option>
         </select>
         <select id="squad">
+            <option value="Leadership">Leadership</option>
             <option value="Shadow Squad">Shadow Squad</option>
             <option value="Overwatch Squad">Overwatch Squad</option>
             <option value="Phantom Squad">Phantom Squad</option>
@@ -55,6 +56,10 @@
     </form>
     
     <div id="rosterContainer">
+        <div class="leadership-section">
+            <h2>Leadership</h2>
+            <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="leadership"></tbody></table>
+        </div>
         <div class="squad-section">
             <h2>Shadow Squad</h2>
             <table><thead><tr><th>Name</th><th>Rank</th><th>Role</th><th>Action</th></tr></thead><tbody id="shadowSquad"></tbody></table>
@@ -89,20 +94,13 @@
             addPerson();
         });
 
-        document.getElementById('quickAdd').addEventListener('click', function() {
-            let name = prompt("Enter name:");
-            if (name) {
-                addPerson(name, "E1 Private", "Rifleman", "Nomad Squad");
-            }
-        });
-
         function addPerson(name, rank, role, squad) {
             if (!name) name = document.getElementById('name').value;
             if (!rank) rank = document.getElementById('rank').value;
             if (!role) role = document.getElementById('role').value;
             if (!squad) squad = document.getElementById('squad').value;
 
-            let squadTableId = squad.split(" ")[0].toLowerCase() + "Squad";
+            let squadTableId = squad === "Leadership" ? "leadership" : squad.split(" ")[0].toLowerCase() + "Squad";
             let squadTable = document.getElementById(squadTableId);
             if (squadTable) {
                 let row = squadTable.insertRow();
@@ -111,33 +109,7 @@
             saveRoster();
             document.getElementById('rosterForm').reset();
         }
-
-        function saveRoster() {
-            let roster = {};
-            document.querySelectorAll("tbody").forEach(tbody => {
-                let squad = tbody.id;
-                roster[squad] = [];
-                tbody.querySelectorAll("tr").forEach(row => {
-                    let cols = row.querySelectorAll("td");
-                    roster[squad].push({ name: cols[0].innerText, rank: cols[1].innerText, role: cols[2].innerText });
-                });
-            });
-            localStorage.setItem("roster", JSON.stringify(roster));
-        }
-
-        function loadRoster() {
-            let roster = JSON.parse(localStorage.getItem("roster")) || {};
-            for (let squad in roster) {
-                roster[squad].forEach(member => addPerson(member.name, member.rank, member.role, squad.replace("Squad", " Squad")));
-            }
-        }
-
-        function removePerson(button, squad) {
-            button.parentElement.parentElement.remove();
-            saveRoster();
-        }
-
-        window.onload = loadRoster;
     </script>
 </body>
 </html>
+
