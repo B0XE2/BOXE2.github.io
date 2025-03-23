@@ -24,7 +24,6 @@
     <form id="rosterForm">
         <input type="text" id="name" placeholder="Name" required>
         <select id="rank">
-            <option value="Regimental Commander">Regimental Commander</option>
             <option value="Executive Officer">Executive Officer</option>
             <option value="Operations Officer">Operations Officer</option>
             <option value="E9 Sergeant Major">E9 Sergeant Major</option>
@@ -76,8 +75,8 @@
     
     <script>
         function authenticateDeveloper() {
-            let password = prompt("Enter Developer Passwor:");
-            if (password === "devpass123") { // Change this password for security
+            let password = prompt("Enter Developer Password:");
+            if (password === "devpass123") {
                 document.getElementById('rosterForm').style.display = 'block';
                 document.getElementById('authContainer').style.display = 'none';
             } else {
@@ -107,10 +106,38 @@
             let squadTable = document.getElementById(squadTableId);
             if (squadTable) {
                 let row = squadTable.insertRow();
-                row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="this.parentElement.parentElement.remove()">Remove</button></td>`;
+                row.innerHTML = `<td>${name}</td><td>${rank}</td><td>${role}</td><td><button onclick="removePerson(this, '${squad}')">Remove</button></td>`;
             }
+            saveRoster();
             document.getElementById('rosterForm').reset();
         }
+
+        function saveRoster() {
+            let roster = {};
+            document.querySelectorAll("tbody").forEach(tbody => {
+                let squad = tbody.id;
+                roster[squad] = [];
+                tbody.querySelectorAll("tr").forEach(row => {
+                    let cols = row.querySelectorAll("td");
+                    roster[squad].push({ name: cols[0].innerText, rank: cols[1].innerText, role: cols[2].innerText });
+                });
+            });
+            localStorage.setItem("roster", JSON.stringify(roster));
+        }
+
+        function loadRoster() {
+            let roster = JSON.parse(localStorage.getItem("roster")) || {};
+            for (let squad in roster) {
+                roster[squad].forEach(member => addPerson(member.name, member.rank, member.role, squad.replace("Squad", " Squad")));
+            }
+        }
+
+        function removePerson(button, squad) {
+            button.parentElement.parentElement.remove();
+            saveRoster();
+        }
+
+        window.onload = loadRoster;
     </script>
 </body>
 </html>
