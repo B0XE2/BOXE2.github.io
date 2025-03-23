@@ -44,7 +44,7 @@
             <option value="Rifleman">Rifleman</option>
             <option value="Automatic Rifleman">Automatic Rifleman</option>
         </select>
-        <select id="squad">
+        <select id="squadd">
             <option value="Leadership">Leadership</option>
             <option value="Shadow Squad">Shadow Squad</option>
             <option value="Overwatch Squad">Overwatch Squad</option>
@@ -89,6 +89,17 @@
             }
         }
 
+        function saveRoster() {
+            localStorage.setItem('roster', document.getElementById('rosterContainer').innerHTML);
+        }
+
+        function loadRoster() {
+            let savedRoster = localStorage.getItem('roster');
+            if (savedRoster) {
+                document.getElementById('rosterContainer').innerHTML = savedRoster;
+            }
+        }
+
         document.getElementById('rosterForm').addEventListener('submit', function(e) {
             e.preventDefault();
             addPerson();
@@ -109,7 +120,8 @@
             saveRoster();
             document.getElementById('rosterForm').reset();
         }
+
+        window.onload = loadRoster;
     </script>
 </body>
 </html>
-
