@@ -80,7 +80,7 @@
         </div>
     </div>
     
-   <script>
+ <script>
     function authenticateDeveloper() {
         let password = prompt("Enter Developer Password:");
         if (password === "devpass123") {
@@ -90,6 +90,8 @@
             alert("Incorrect password. Access denied.");
         }
     }
+
+    let roster = [];
 
     function saveRoster() {
         localStorage.setItem('roster', JSON.stringify(roster));
@@ -103,8 +105,6 @@
         }
     }
 
-    let roster = [];
-
     document.getElementById('rosterForm').addEventListener('submit', function(e) {
         e.preventDefault();
         addPerson();
@@ -114,7 +114,7 @@
         let name = document.getElementById('name').value;
         let rank = document.getElementById('rank').value;
         let role = document.getElementById('role').value;
-        let squad = document.getElementById('squad').value;
+        let squad = document.getElementById('squadd').value;  // FIX: Changed 'squad' to 'squadd' to match HTML
 
         if (!name) return alert("Name cannot be empty!");
 
@@ -125,13 +125,13 @@
     }
 
     function removePerson(index) {
-        roster.splice(index, 1);
+        roster.splice(index, 1);  // Removes person at given index
         saveRoster();
         renderRoster();
     }
 
     function renderRoster() {
-        document.querySelectorAll("tbody").forEach(tbody => tbody.innerHTML = ""); 
+        document.querySelectorAll("tbody").forEach(tbody => tbody.innerHTML = "");  // Clear all tables before rendering
 
         roster.forEach((person, index) => {
             let squadTableId = person.squad === "Leadership" ? "leadership" : person.squad.split(" ")[0].toLowerCase() + "Squad";
