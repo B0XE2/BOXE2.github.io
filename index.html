@@ -13,10 +13,14 @@
         button { background-color: #6272a4; color: white; border: none; cursor: pointer; }
         button:hover { background-color: #50fa7b; }
         .squad-section { margin-top: 30px; }
+        #rosterForm { display: none; }
     </style>
 </head>
 <body>
     <h1>Team Roster</h1>
+    <div id="authContainer">
+        <button onclick="authenticateDeveloper()">Developer Login</button>
+    </div>
     <form id="rosterForm">
         <input type="text" id="name" placeholder="Name" required>
         <select id="rank">
@@ -70,6 +74,16 @@
     </div>
     
     <script>
+        function authenticateDeveloper() {
+            let password = prompt("Enter Developer Password:");
+            if (password === "devpass123") { // Change this password for security
+                document.getElementById('rosterForm').style.display = 'block';
+                document.getElementById('authContainer').style.display = 'none';
+            } else {
+                alert("Incorrect password. Access denied.");
+            }
+        }
+
         document.getElementById('rosterForm').addEventListener('submit', function(e) {
             e.preventDefault();
             addPerson();
@@ -88,8 +102,7 @@
             if (!role) role = document.getElementById('role').value;
             if (!squad) squad = document.getElementById('squad').value;
 
-           let squadTableId = squad.split(" ")[0].toLowerCase() + "Squad";
-
+            let squadTableId = squad.split(" ")[0].toLowerCase() + "Squad";
             let squadTable = document.getElementById(squadTableId);
             if (squadTable) {
                 let row = squadTable.insertRow();
